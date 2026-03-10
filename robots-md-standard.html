@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>robots.md — The AI Agent Discovery Standard</title>
+<meta name="description" content="A discovery standard for the age of AI agents. robots.md helps AI agents understand your business, APIs, and how to interact programmatically." />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://agenti.nz/robots-md-standard.html" />
+<meta property="og:title" content="robots.md — The AI Agent Discovery Standard" />
+<meta property="og:description" content="A discovery standard for the age of AI agents. Control how AI agents describe your business." />
+<meta property="og:image" content="https://agenti.nz/robots-md-standard-og.jpg" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://agenti.nz/robots-md-standard.html" />
+<meta name="twitter:title" content="robots.md — The AI Agent Discovery Standard" />
+<meta name="twitter:description" content="A discovery standard for the age of AI agents. Control how AI agents describe your business." />
+<meta name="twitter:image" content="https://agenti.nz/robots-md-standard-og.jpg" />
+
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #131316;
+    --surface-2: #1a1a1f;
+    --border: #2a2a30;
+    --text: #e8e8ed;
+    --text-muted: #8888a0;
+    --accent: #22d3ee;
+    --accent-dim: rgba(34, 211, 238, 0.1);
+    --accent-glow: rgba(34, 211, 238, 0.15);
+    --green: #34d399;
+    --orange: #fb923c;
+    --pink: #f472b6;
+    --purple: #a78bfa;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- HERO --- */
+  .hero {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    animation: fadeIn 0.8s ease;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.8s ease 0.1s both;
+  }
+
+  .hero h1 .dot { color: var(--accent); }
+
+  .hero-subtitle {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    animation: fadeIn 0.8s ease 0.2s both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeIn 0.8s ease 0.3s both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn-primary:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- LAYOUT --- */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    padding: 5rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    margin-top: 2rem;
+    color: var(--text);
+  }
+
+  p { color: var(--text-muted); margin-bottom: 1.2rem; }
+
+  /* --- CODE BLOCKS --- */
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .code-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .code-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .code-dots span:first-child { background: #ff5f57; }
+  .code-dots span:nth-child(2) { background: #febc2e; }
+  .code-dots span:nth-child(3) { background: #28c840; }
+
+  pre {
+    padding: 1.2rem;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .kw { color: var(--pink); }
+  .str { color: var(--green); }
+  .cmt { color: #555570; font-style: italic; }
+  .key { color: var(--accent); }
+  .val { color: var(--orange); }
+  .tag { color: var(--purple); }
+
+  /* --- COMPARISON TABLE --- */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .comparison-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem;
+  }
+
+  .comparison-card.highlight {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, var(--surface) 0%, var(--accent-dim) 100%);
+  }
+
+  .comparison-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .comparison-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .comparison-card li {
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .comparison-card li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .comparison-card.old li::before { color: var(--text-muted); content: '—'; }
+
+  /* --- SPEC TABLE --- */
+  .spec-grid {
+    display: grid;
+    gap: 0;
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .spec-row:last-child { border-bottom: none; }
+
+  .spec-row dt {
+    background: var(--surface);
+    padding: 0.8rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+  }
+
+  .spec-row dd {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+  }
+
+  /* --- TIMELINE --- */
+  .timeline {
+    position: relative;
+    margin: 2.5rem 0;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--purple), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 2rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.3rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    margin-left: -4px;
+  }
+
+  .timeline-item h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-item p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  /* --- FOOTER --- */
+  .footer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .footer p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 640px) {
+    .comparison { grid-template-columns: 1fr; }
+    .spec-row { grid-template-columns: 1fr; }
+    .spec-row dt { border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Proposed Open Standard</div>
+  <h1>robots<span class="dot">.</span>md</h1>
+  <p class="hero-subtitle">A discovery standard for the age of AI agents</p>
+  <div class="hero-cta">
+    <a href="#spec" class="btn btn-primary">Read the Spec ↓</a>
+    <a href="#why" class="btn btn-secondary">Why This Matters</a>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- WHY -->
+<section id="why">
+  <div class="section-label">01 / The Problem</div>
+  <h2>The web was built for humans and search engines. AI agents need something new.</h2>
+  <p><code>robots.txt</code> has served us well since 1994. It tells crawlers where they can and can't go. But it was designed for a world where the consumer of web content was either a human reading a page or a search engine indexing links.</p>
+  <p>We're now entering a world where <strong style="color: var(--text)">AI agents act on behalf of humans</strong> — booking appointments, comparing services, making purchases, integrating systems. These agents don't need HTML layouts or meta descriptions. They need structured, machine-readable content that describes what a business does, what APIs are available, and how to interact programmatically.</p>
+  <p><strong style="color: var(--text)">There is currently no standard for this.</strong> Every AI agent that wants to understand a business has to scrape, guess, or rely on incomplete search results. We can do better.</p>
+
+  <div class="comparison">
+    <div class="comparison-card old">
+      <h4>robots.txt <span style="color: var(--text-muted); font-weight: 400;">(1994)</span></h4>
+      <ul>
+        <li>Controls crawler access permissions</li>
+        <li>Designed for search engine indexing</li>
+        <li>Says where bots CAN'T go</li>
+        <li>No business context or content</li>
+        <li>No API discovery</li>
+      </ul>
+    </div>
+    <div class="comparison-card highlight">
+      <h4 style="color: var(--accent);">robots.md <span style="color: var(--text-muted); font-weight: 400;">(2026)</span></h4>
+      <ul>
+        <li>Describes business for AI agents</li>
+        <li>Designed for AI agent interaction</li>
+        <li>Says what agents CAN do</li>
+        <li>Rich business context and metadata</li>
+        <li>Full API endpoint discovery</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SPEC -->
+<section id="spec">
+  <div class="section-label">02 / Specification v0.1</div>
+  <h2>The robots.md standard</h2>
+  <p>A <code>robots.md</code> file is a Markdown document placed at the root of a website (<code>/robots.md</code>) that provides AI agents with structured, human-readable information about a business and its available digital interfaces.</p>
+
+  <div class="spec-grid">
+    <div class="spec-row">
+      <dt>Filename</dt>
+      <dd><code>robots.md</code></dd>
+    </div>
+    <div class="spec-row">
+      <dt>Location</dt>
+      <dd>Website root: <code>https://example.com/robots.md</code></dd>
+    </div>
+    <div class="spec-row">
+      <dt>Format</dt>
+      <dd>Markdown with structured sections (GitHub-flavoured)</dd>
+    </div>
+    <div class="spec-row">
+      <dt>Encoding</dt>
+      <dd>UTF-8</dd>
+    </div>
+    <div class="spec-row">
+      <dt>Content-Type</dt>
+      <dd><code>text/markdown; charset=UTF-8</code></dd>
+    </div>
+    <div class="spec-row">
+      <dt>Max Size</dt>
+      <dd>Recommended under 50KB</dd>
+    </div>
+    <div class="spec-row">
+      <dt>Relation to robots.txt</dt>
+      <dd>Complementary, not a replacement</dd>
+    </div>
+  </div>
+
+  <h3>Required Sections</h3>
+  <p>A valid <code>robots.md</code> must include at minimum:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      robots.md — minimum viable file
+    </div>
+    <pre><span class="cmt"># Business Name</span>
+
+<span class="cmt">## Identity</span>
+<span class="key">- Organization:</span> <span class="str">Your Business Name</span>
+<span class="key">- Website:</span> <span class="str">https://example.com</span>
+<span class="key">- Industry:</span> <span class="str">What you do</span>
+<span class="key">- Location:</span> <span class="str">Where you operate</span>
+<span class="key">- Contact:</span> <span class="str">hello@example.com</span>
+<span class="key">- Updated:</span> <span class="str">2026-03-10</span>
+
+<span class="cmt">## Services</span>
+A description of what the business offers,
+written for an AI agent to understand context.
+
+<span class="cmt">## Endpoints (optional)</span>
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| /api/info | GET | None | Business info |
+
+<span class="cmt">## Data &amp; Privacy</span>
+How data is handled, stored, and protected.
+
+<span class="cmt">## Permissions</span>
+<span class="key">- Cache:</span> <span class="str">yes (refresh: 24h)</span>
+<span class="key">- Attribution:</span> <span class="str">Required</span>
+<span class="key">- Commercial use:</span> <span class="str">Contact for licensing</span></pre>
+  </div>
+
+  <h3>Optional Sections</h3>
+  <p>Businesses can extend their <code>robots.md</code> with additional structured data:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      Extended sections
+    </div>
+    <pre><span class="cmt">## Pricing</span>
+Structured pricing information for AI agents
+to compare or recommend services.
+
+<span class="cmt">## Case Studies</span>
+Results and outcomes that help AI agents
+evaluate and recommend the business.
+
+<span class="cmt">## Integration Guide</span>
+How AI agents should interact with APIs,
+including rate limits, auth methods, and examples.
+
+<span class="cmt">## FAQ</span>
+Structured Q&amp;A for AI agents to answer
+user queries about the business.
+
+<span class="cmt">## Changelog</span>
+Version history of the robots.md file.</pre>
+  </div>
+
+  <h3>Discovery Mechanism</h3>
+  <p>For AI agents to find <code>robots.md</code> automatically, websites should implement one or more of these discovery methods:</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      Method 1: HTML &lt;link&gt; tag
+    </div>
+    <pre><span class="tag">&lt;link</span> <span class="key">rel</span>=<span class="str">"ai-discovery"</span> <span class="key">href</span>=<span class="str">"/robots.md"</span> <span class="key">type</span>=<span class="str">"text/markdown"</span> <span class="tag">/&gt;</span></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      Method 2: robots.txt reference
+    </div>
+    <pre><span class="cmt"># robots.txt</span>
+<span class="key">User-agent:</span> <span class="str">*</span>
+<span class="key">Allow:</span> <span class="str">/</span>
+
+<span class="cmt"># AI Agent Discovery</span>
+<span class="key">AI-discovery:</span> <span class="str">/robots.md</span></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      Method 3: .well-known endpoint
+    </div>
+    <pre><span class="cmt">// GET /.well-known/ai-discovery</span>
+{
+  <span class="key">"robots_md"</span>: <span class="str">"/robots.md"</span>,
+  <span class="key">"content_api"</span>: <span class="str">"/api/content"</span>,
+  <span class="key">"version"</span>: <span class="str">"0.1"</span>
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots"><span></span><span></span><span></span></div>
+      Method 4: HTTP response header
+    </div>
+    <pre><span class="key">X-AI-Discovery:</span> <span class="str">/robots.md</span></pre>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section>
+  <div class="section-label">03 / Use Cases</div>
+  <h2>What becomes possible</h2>
+  <p>When AI agents can reliably discover structured business information, entirely new interactions become possible:</p>
+
+  <h3>For Businesses</h3>
+  <p>Control how AI agents describe your services. Provide accurate pricing, capabilities, and contact info directly — instead of letting AI hallucinate about your business based on scraped fragments.</p>
+
+  <h3>For AI Agent Developers</h3>
+  <p>Build agents that can discover, compare, and interact with businesses programmatically. No more scraping unreliable HTML. One standard location, one structured format.</p>
+
+  <h3>For Consumers</h3>
+  <p>Ask your AI assistant to "find a plumber in Auckland who does after-hours work" and get accurate, up-to-date results pulled directly from the business — not from a stale directory listing.</p>
+
+  <h3>For the Ecosystem</h3>
+  <p>As AI agents increasingly mediate commerce (see Mastercard Agent Pay, OpenAI Operator, etc.), businesses without machine-readable presence will become invisible. <code>robots.md</code> is the simplest path to AI-readiness.</p>
+</section>
+
+<!-- PRINCIPLES -->
+<section>
+  <div class="section-label">04 / Design Principles</div>
+  <h2>Built on simplicity</h2>
+
+  <p><strong style="color: var(--text)">Human-readable first.</strong> Markdown was chosen because it's readable by both humans and machines. No XML schemas, no JSON-LD complexity. A business owner should be able to write their own <code>robots.md</code> in a text editor.</p>
+
+  <p><strong style="color: var(--text)">Progressive complexity.</strong> The minimum viable file is 10 lines. Advanced features (API endpoints, integration guides, structured pricing) are optional. Start simple, add depth as needed.</p>
+
+  <p><strong style="color: var(--text)">Complementary, not competing.</strong> <code>robots.md</code> doesn't replace <code>robots.txt</code>, <code>sitemap.xml</code>, or schema.org markup. It fills a gap none of them address: telling AI agents what a business IS and how to interact with it.</p>
+
+  <p><strong style="color: var(--text)">Privacy by design.</strong> The standard includes a Data & Privacy section as required, not optional. Businesses declare upfront how data is handled, cached, and attributed.</p>
+</section>
+
+<!-- ROADMAP -->
+<section>
+  <div class="section-label">05 / Roadmap</div>
+  <h2>From proposal to standard</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4>Q1 2026 — Proposal</h4>
+      <p>Publish spec v0.1 and reference implementation. Gather community feedback.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Q2 2026 — Early Adoption</h4>
+      <p>Partner with NZ businesses to implement. Build validator tool. Publish case studies.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Q3 2026 — Tooling</h4>
+      <p>Release robots.md generator, validator, and crawler library. Integrations with popular CMS platforms.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>Q4 2026 — Standardisation</h4>
+      <p>Submit to relevant standards bodies. Engage AI platform providers (OpenAI, Anthropic, Google) for native support.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GET INVOLVED -->
+<section>
+  <div class="section-label">06 / Get Involved</div>
+  <h2>Help shape the standard</h2>
+  <p>This is an open proposal. We're looking for:</p>
+  <p><strong style="color: var(--text)">Early adopters</strong> — businesses willing to implement <code>robots.md</code> and share feedback.</p>
+  <p><strong style="color: var(--text)">AI developers</strong> — build tools that discover and parse <code>robots.md</code> files.</p>
+  <p><strong style="color: var(--text)">Contributors</strong> — help refine the spec, write documentation, build validators.</p>
+  <p><strong style="color: var(--text)">Standards advocates</strong> — help connect this proposal to W3C, IETF, or relevant working groups.</p>
+  <p style="margin-top: 2rem; color: var(--text);">
+    Proposed by <a href="https://agenti.nz" style="color: var(--accent); text-decoration: none;">Agenti NZ</a> — AI Automation for Kiwi Businesses.<br>
+    <span style="color: var(--text-muted);">Contact: call@agenti.nz</span>
+  </p>
+</section>
+
+<div class="footer">
+  <p>robots.md v0.1 · Proposed by <a href="https://agenti.nz">Agenti NZ</a> · March 2026</p>
+  <p style="margin-top: 0.5rem;">This specification is open source. Contributions welcome.</p>
+</div>
+
+</div>
+</body>
+</html>
